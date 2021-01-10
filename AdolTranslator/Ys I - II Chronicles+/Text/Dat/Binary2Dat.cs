@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
 using Yarhl.FileFormat;
 using Yarhl.IO;
@@ -11,9 +11,9 @@ namespace AdolTranslator.Text.Dat
         private DataReader reader;
         public static Encoding Sjis = Encoding.GetEncoding("shift_jis");
 
-        public AdolTranslator.Text.Dat.Dat Convert(BinaryFormat source)
+        public Dat Convert(BinaryFormat source)
         {
-            dat = new AdolTranslator.Text.Dat.Dat();
+            dat = new Dat();
             reader = new DataReader(source.Stream) {Stream = {Position = 0}};
 
             ReadHeader();

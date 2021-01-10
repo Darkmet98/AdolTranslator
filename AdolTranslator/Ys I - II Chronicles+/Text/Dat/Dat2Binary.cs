@@ -1,4 +1,10 @@
-﻿using Yarhl.FileFormat;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Yarhl.FileFormat;
 using Yarhl.IO;
 
 namespace AdolTranslator.Text.Dat
@@ -7,11 +13,19 @@ namespace AdolTranslator.Text.Dat
     {
         private DataWriter writer;
         private Dat dat;
+        private Dictionary<string, string> map;
 
-        public BinaryFormat Convert(AdolTranslator.Text.Dat.Dat source)
+        private string dictionaryDir =
+            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}text.ini";
+
+        public BinaryFormat Convert(Dat source)
         {
             writer = new DataWriter(new DataStream());
             dat = source;
+            map = new Dictionary<string, string>();
+
+            if (File.Exists(dictionaryDir))
+                GenerateDictionary();
 
             FillHeader();
             WriteData();
@@ -37,7 +51,8 @@ namespace AdolTranslator.Text.Dat
                     dat.SizesList.Add(-1);
                     continue;
                 }
-                var bytes = Binary2Dat.Sjis.GetBytes(text + "\0");
+
+                var bytes = Binary2Dat.Sjis.GetBytes(ReplaceChars(text) + "\0");
                 var encrypted = Binary2Dat.XorEncryption(bytes);
                 writer.Write(encrypted);
                 dat.SizesList.Add(encrypted.Length);
@@ -54,6 +69,35 @@ namespace AdolTranslator.Text.Dat
             {
                 writer.Write(size);
             }
+        }
+
+        private void GenerateDictionary()
+        {
+            var textFile = File.ReadAllLines(dictionaryDir);
+            foreach (var s in textFile)
+            {
+                var splitted = s.Split(' ');
+                var utf = Encoding.GetEncoding(1252).GetString(GetBytesFromString(splitted[0]));
+                var sjis = Binary2Dat.Sjis.GetString(GetBytesFromString(splitted[1]));
+                map.Add(utf, sjis);
+            }
+        }
+
+        private string ReplaceChars(string ori)
+        {
+            return map.Aggregate(ori, (current, key) => current.Replace(key.Key, key.Value));
+        }
+
+        private byte[] GetBytesFromString(string intText)
+        {
+            var list = new List<byte>();
+            list.AddRange(BitConverter.GetBytes(System.Convert.ToInt32(intText)));
+            do
+            {
+                list.Remove(0);
+            } while (list.Contains(0));
+            list.Reverse();
+            return list.ToArray();
         }
     }
 }
