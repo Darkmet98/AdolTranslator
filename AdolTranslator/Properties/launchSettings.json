@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AdolTranslator": {
+      "commandName": "Project",
+      "commandLineArgs": "config.exe"
+    }
+  }
+}

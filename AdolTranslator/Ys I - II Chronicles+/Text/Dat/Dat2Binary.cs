@@ -13,16 +13,15 @@ namespace AdolTranslator.Text.Dat
     {
         private DataWriter writer;
         private Dat dat;
-        private Dictionary<string, string> map;
+        public static Dictionary<string, string> Map = new Dictionary<string, string>();
 
-        private string dictionaryDir =
-            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}text.ini";
+        public static string dictionaryDir =
+            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}";
 
         public BinaryFormat Convert(Dat source)
         {
             writer = new DataWriter(new DataStream());
             dat = source;
-            map = new Dictionary<string, string>();
 
             if (File.Exists(dictionaryDir))
                 GenerateDictionary();
@@ -71,24 +70,25 @@ namespace AdolTranslator.Text.Dat
             }
         }
 
-        private void GenerateDictionary()
+        public static void GenerateDictionary(string anotherDic = "text.ini")
         {
-            var textFile = File.ReadAllLines(dictionaryDir);
+            var textFile = File.ReadAllLines(dictionaryDir + anotherDic);
+            Map.Clear();
             foreach (var s in textFile)
             {
                 var splitted = s.Split(' ');
                 var utf = Encoding.GetEncoding(1252).GetString(GetBytesFromString(splitted[0]));
                 var sjis = Binary2Dat.Sjis.GetString(GetBytesFromString(splitted[1]));
-                map.Add(utf, sjis);
+                Map.Add(utf, sjis);
             }
         }
 
-        private string ReplaceChars(string ori)
+        public static string ReplaceChars(string ori)
         {
-            return map.Aggregate(ori, (current, key) => current.Replace(key.Key, key.Value));
+            return Map.Aggregate(ori, (current, key) => current.Replace(key.Key, key.Value));
         }
 
-        private byte[] GetBytesFromString(string intText)
+        private static byte[] GetBytesFromString(string intText)
         {
             var list = new List<byte>();
             list.AddRange(BitConverter.GetBytes(System.Convert.ToInt32(intText)));
