@@ -9,19 +9,21 @@ namespace AdolTranslator.Elf
         private Config config;
         public PatchExe(string exePath)
         {
+            var dirPath = Path.GetDirectoryName(exePath);
+            if (!string.IsNullOrWhiteSpace(dirPath))
+                dirPath += Path.DirectorySeparatorChar;
+
             if (exePath.Contains("config"))
-                InstanceSettingsConfig(exePath);
+                InstanceSettingsConfig(exePath, dirPath);
             else
-                InstanceMainConfig(exePath);
+                InstanceMainConfig(exePath, dirPath);
 
             var apply = new CustomApplyTranslations(config);
             apply.GenerateElfPatched();
         }
 
-        private void InstanceMainConfig(string exePath)
+        private void InstanceMainConfig(string exePath, string dirPath)
         {
-            var dirPath = Path.GetDirectoryName(exePath);
-
             config = new Config()
             {
                 ContainsFixedEntries = false,
@@ -56,10 +58,8 @@ namespace AdolTranslator.Elf
             };
         }
 
-        private void InstanceSettingsConfig(string exePath)
+        private void InstanceSettingsConfig(string exePath, string dirPath)
         {
-            var dirPath = Path.GetDirectoryName(exePath);
-
             config = new Config()
             {
                 ContainsFixedEntries = false,
@@ -71,7 +71,8 @@ namespace AdolTranslator.Elf
                     {
                         EncodingId = 1252,
                         SectionName = ".rdata",
-                        PoPath = $"{dirPath}Config.po"
+                        PoPath = $"{dirPath}Config.po",
+                        CustomDictionary = false
                     }
                 }
             };

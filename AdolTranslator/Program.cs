@@ -19,7 +19,7 @@ namespace AdolTranslator
 
             Console.WriteLine("AdolTranslator - A simple Ys translator By Darkmet98.");
 
-            if (args.Length > 3)
+            if (args.Length > 3 || args.Length == 0)
             {
                 Console.WriteLine("Usage: AdolTranslator File.Extension");
                 return;
