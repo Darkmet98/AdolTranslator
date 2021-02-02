@@ -2,10 +2,12 @@
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using AdolTranslator.Containers.Dat;
 using AdolTranslator.Elf;
 using AdolTranslator.Text.Dat;
 using Yarhl.FileSystem;
 using Yarhl.Media.Text;
+using Binary2Dat = AdolTranslator.Text.Dat.Binary2Dat;
 
 namespace AdolTranslator
 {
@@ -34,7 +36,21 @@ namespace AdolTranslator
 
                 case ".DAT":
                     node = NodeFactory.FromFile(args[0]);
-                    node.TransformWith(new Binary2Dat()).TransformWith(new Dat2Po()).TransformWith(new Po2Binary()).Stream.WriteTo($"{name}.po");
+                    if (args[0].Contains("SCENA"))
+                        node.TransformWith(new Binary2Dat()).TransformWith(new Dat2Po()).TransformWith(new Po2Binary())
+                            .Stream.WriteTo($"{name}.po");
+                    else
+                    {
+                        node.TransformWith(new Binary2DatContainer()).TransformWith(new DatContainer2NodeContainer());
+                        var folder = Path.GetFileNameWithoutExtension(args[0]);
+                        if (!Directory.Exists(folder))
+                            Directory.CreateDirectory(folder);
+
+                        foreach (var child in node.Children)
+                        {
+                            child.Stream.WriteTo(folder + Path.DirectorySeparatorChar + child.Name);
+                        }
+                    }
                     break;
                 case ".EXE":
                     var exePatch = new PatchExe(args[0]);

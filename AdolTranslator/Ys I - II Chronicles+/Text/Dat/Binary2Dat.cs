@@ -52,10 +52,8 @@ namespace AdolTranslator.Text.Dat
             }
         }
 
-        public static byte[] XorEncryption(byte[] array)
+        public static byte[] XorEncryption(byte[] array, int key = 0xA5) //Xor Key — Thanks Megaflan
         {
-            var key = 0xA5; //Xor Key — Thanks Megaflan
-
             var result = array;
 
             for (int i = 0; i < array.Length; i++)

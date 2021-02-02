@@ -23,7 +23,7 @@ namespace AdolTranslator.Text.Dat
             writer = new DataWriter(new DataStream());
             dat = source;
 
-            if (File.Exists(dictionaryDir))
+            if (File.Exists(dictionaryDir + "text.ini"))
                 GenerateDictionary();
 
             FillHeader();

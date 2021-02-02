@@ -2,7 +2,7 @@
   "profiles": {
     "AdolTranslator": {
       "commandName": "Project",
-      "commandLineArgs": "config.exe"
+      "commandLineArgs": "ys1plus.exe"
     }
   }
 }
