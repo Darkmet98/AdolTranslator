@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,10 +6,19 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AsmResolver" Version="4.3.0" />
     <PackageReference Include="AsmResolver.PE" Version="4.3.0" />
     <PackageReference Include="AsmResolver.PE.File" Version="4.3.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
     <PackageReference Include="Yarhl" Version="3.1.0" />
     <PackageReference Include="Yarhl.Media" Version="3.1.0" />
   </ItemGroup>
@@ -18,6 +27,18 @@
     <Reference Include="ElfManipulator">
       <HintPath>lib\ElfManipulator.dll</HintPath>
     </Reference>
+    <Reference Include="Texim">
+      <HintPath>lib\Texim.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Diary.po">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI 2.po">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

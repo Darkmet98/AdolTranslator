@@ -7,6 +7,7 @@ namespace AdolTranslator.Containers.Dat
     {
         public List<int> Positions { get; }
         public List<byte[]> Blocks { get; }
+        public string Information { get; set; }
 
         public DatContainer()
         {

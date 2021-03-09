@@ -1,4 +1,5 @@
-﻿using Yarhl.FileFormat;
+﻿using System.Text;
+using Yarhl.FileFormat;
 using Yarhl.FileSystem;
 
 namespace AdolTranslator.Containers.Dat
@@ -14,6 +15,8 @@ namespace AdolTranslator.Containers.Dat
             {
                 container.Root.Add(GenerateSingleNode($"{i}.bin", source.Blocks[i]));
             }
+
+            container.Root.Add(GenerateSingleNode("Info.txt", Encoding.UTF8.GetBytes(source.Information)));
 
             return container;
         }
