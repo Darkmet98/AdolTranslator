@@ -1,4 +1,5 @@
-﻿using Yarhl.FileFormat;
+﻿using AdolTranslator.Containers.SE.DAT;
+using Yarhl.FileFormat;
 using Yarhl.IO;
 
 namespace AdolTranslator.Containers.Dat

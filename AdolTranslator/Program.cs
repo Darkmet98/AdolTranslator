@@ -2,10 +2,12 @@
 using System.IO;
 using System.Text;
 using AdolTranslator.Containers.Dat;
+using AdolTranslator.Containers.SE.DAT;
 using AdolTranslator.Elf;
 using AdolTranslator.Image._256;
 using AdolTranslator.Image.Waku0;
 using AdolTranslator.Text.Dat;
+using AdolTranslator.Text.ys2;
 using Yarhl.FileSystem;
 using Yarhl.IO;
 using Yarhl.Media.Text;
@@ -44,6 +46,18 @@ namespace AdolTranslator
                     if (args[0].Contains("SCENA"))
                         node.TransformWith(new Binary2Dat()).TransformWith(new Dat2Po()).TransformWith(new Po2Binary())
                             .Stream.WriteTo($"{name}.po");
+                    else if (args[0].Contains("SE.DAT"))
+                    {
+                        node.TransformWith(new Binary2SeDatContainer()).TransformWith(new SeDatContainer2NodeContainer());
+                        var folder = Path.GetFileNameWithoutExtension(args[0]);
+                        if (!Directory.Exists(folder))
+                            Directory.CreateDirectory(folder);
+
+                        foreach (var child in node.Children)
+                        {
+                            child.Stream.WriteTo(folder + Path.DirectorySeparatorChar + child.Name);
+                        }
+                    }
                     else
                     {
                         node.TransformWith(new Binary2DatContainer()).TransformWith(new DatContainer2NodeContainer());
@@ -91,7 +105,6 @@ namespace AdolTranslator
 
                     break;
             }
-            
         }
     }
 }

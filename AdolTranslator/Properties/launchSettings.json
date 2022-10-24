@@ -2,7 +2,7 @@
   "profiles": {
     "AdolTranslator": {
       "commandName": "Project",
-      "commandLineArgs": "WAKU0.BIN.png"
+      "commandLineArgs": "SE.DAT"
     }
   }
 }
