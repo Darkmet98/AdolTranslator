@@ -17,3 +17,13 @@ namespace AdolTranslator.Text.Dat
         }
     }
 }
+
+/*
+ *  Investigations
+ *  Block 0 = Junk Data
+ *  Block 1 = Item descriptions, menu entries and junk
+ *  Block 2 = Junk Data
+ *  Block 3 = Junk Data
+ *  Block 4 = Junk Data
+ *  Block 5 = All text from game
+ */

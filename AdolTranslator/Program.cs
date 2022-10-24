@@ -6,8 +6,9 @@ using AdolTranslator.Containers.SE.DAT;
 using AdolTranslator.Elf;
 using AdolTranslator.Image._256;
 using AdolTranslator.Image.Waku0;
+using AdolTranslator.Text.Asn;
 using AdolTranslator.Text.Dat;
-using AdolTranslator.Text.ys2;
+using AdolTranslator.Ys_I___II_Chronicles_.Text.Asn;
 using Yarhl.FileSystem;
 using Yarhl.IO;
 using Yarhl.Media.Text;
@@ -91,6 +92,11 @@ namespace AdolTranslator
                     else
                         throw new NotSupportedException();
 
+                    break;
+                case ".YS2":
+                    node = NodeFactory.FromFile(args[0]);
+                    node.TransformWith(new Binary2Asn()).TransformWith(new Asn2Po()).TransformWith(new Po2Binary())
+                        .Stream.WriteTo($"{name}.po"); ;
                     break;
             }
         }

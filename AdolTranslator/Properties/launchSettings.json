@@ -2,7 +2,7 @@
   "profiles": {
     "AdolTranslator": {
       "commandName": "Project",
-      "commandLineArgs": "SE.DAT"
+      "commandLineArgs": "ys2_libre.ys2"
     }
   }
 }
