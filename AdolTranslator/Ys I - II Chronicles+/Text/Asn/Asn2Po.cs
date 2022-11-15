@@ -26,15 +26,16 @@ namespace AdolTranslator.Ys_I___II_Chronicles_.Text.Asn
 
 
             // For now, get all text from block 5
-            for (int j = 0; j < source.Blocks[5].Count; j++)
+            var meme = source.Texts.OrderBy(x => x.sort);
+            foreach (var sourceText in meme)
             {
-                var text = source.Blocks[5].Texts[j].Replace("\0", "");
+                var text = sourceText.text;
                 if (string.IsNullOrWhiteSpace(text))
                     text = "<!empty>";
-
                 po.Add(new PoEntry(text)
                 {
-                    Context = $"Block: {5} | Entry: {j}"
+                    Context = $"Block: 5 | Entry: {sourceText.index}",
+                    ExtractedComments = $"Byte1: {sourceText.byte1:X} | Byte2: {sourceText.byte2:X} | Byte3: {sourceText.byte3:X} | Sort: {sourceText.sort}"
                 });
             }
 

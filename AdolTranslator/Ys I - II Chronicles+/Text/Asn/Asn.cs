@@ -8,11 +8,28 @@ namespace AdolTranslator.Text.Asn
     {
         public string Magic = "ASN\0";
         public List<AsnBlock> Blocks;
+        public List<AsnTexts> Texts;
 
         public Asn()
         {
             Blocks = new List<AsnBlock>();
+            Texts = new List<AsnTexts>();
         }
+    }
+
+    public class AsnTexts
+    {
+        public int index;
+        public short byte1;
+        public short byte2;
+        public short byte3;
+        public string text;
+
+        // Custom sort
+        // Explaining, what the fuck is that, the sort from this game is very strange, is like reading a book from the right to the left, for example:
+        // The normal sort is 1 2 3 4 5 6
+        // But this game sort is 2 1 4 3 6 5
+        public int sort;
     }
 
     public class AsnBlock
@@ -24,12 +41,14 @@ namespace AdolTranslator.Text.Asn
         public short Unknown3;
         public int PositionStart;
         public List<int> Positions;
-        public List<string> Texts;
+        public List<int> Sizes;
+        public List<byte[]> Data;
 
         public AsnBlock()
         {
             Positions = new List<int>();
-            Texts = new List<string>();
+            Sizes = new List<int>();
+            Data = new List<byte[]>();
         }
     }
 }

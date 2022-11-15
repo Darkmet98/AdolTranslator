@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Yarhl.FileFormat;
 using Yarhl.IO;
 
@@ -24,6 +25,7 @@ namespace AdolTranslator.Text.Asn
 
             ReadHeader();
             DumpBlocks();
+            DumpText();
 
             return asn;
         }
@@ -83,11 +85,57 @@ namespace AdolTranslator.Text.Asn
 
                     reader.Stream.PushCurrentPosition();
                     reader.Stream.Position = position;
-                    var bytes = reader.ReadBytes(nextPosition - position);
-                    asn.Blocks[i].Texts.Add(GetDirtyText(bytes));
+                    var size = nextPosition - position;
+                    var bytes = reader.ReadBytes(size);
+                    asn.Blocks[i].Data.Add(bytes);
+                    asn.Blocks[i].Sizes.Add(size);
 
                     reader.Stream.PopPosition();
                 }
+            }
+        }
+
+        private void DumpText()
+        {
+            var block = asn.Blocks[5];
+            var sort = 0;
+            var meme = true;
+            for (int i = 0; i < block.Count; i++)
+            {
+                /*reader.Stream.Position = block.Positions[i+3];
+                asn.Texts.Add(new AsnTexts()
+                {
+                    byte1 = reader.ReadInt16(),
+                    byte2 = reader.ReadInt16(),
+                    byte3 = reader.ReadInt16(),
+                    text = reader.ReadString(Encoding.GetEncoding("shift_jis")),
+                    index = i+3,
+                    sort = i+3
+                });
+                
+
+                reader.Stream.Position = block.Positions[i+2];
+                asn.Texts.Add(new AsnTexts()
+                {
+                    byte1 = reader.ReadInt16(),
+                    byte2 = reader.ReadInt16(),
+                    byte3 = reader.ReadInt16(),
+                    text = reader.ReadString(Encoding.GetEncoding("shift_jis")),
+                    index = i+2,
+                    sort = i+2
+                });
+                i++;*/
+
+                reader.Stream.Position = block.Positions[i];
+                asn.Texts.Add(new AsnTexts()
+                {
+                    byte1 = reader.ReadInt16(),
+                    byte2 = reader.ReadInt16(),
+                    byte3 = reader.ReadInt16(),
+                    text = reader.ReadString(Encoding.GetEncoding("shift_jis")),
+                    index = i,
+                    sort = i
+                });
             }
         }
 
